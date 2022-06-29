@@ -9,7 +9,7 @@ For `Packer.nvim`:
 use {
         'StubbornVegeta/FloatRun',
         config = function()
-            require 'floatrun'
+            require 'module.floatrun'
         end,
         cmd = {'FloatRun'}
     }
@@ -17,7 +17,7 @@ use {
 
 ### Configuration
 
-Write the following configuration into `floatrun.lua`:
+Write the following configuration into `/lua/module/floatrun.lua`:
 ```lua
 local file = vim.api.nvim_buf_get_name(0)
 require("FloatRun").setup{
