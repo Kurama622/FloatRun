@@ -42,7 +42,7 @@ local function float_win_run(cmd)
     vim.api.nvim_win_set_option(
         win,
         "winhl",
-        "Normal:" .. config.ui.float_hl .. ",FloatBorder" .. config.ui.border_hl
+        "Normal:" .. config.ui.float_hl .. ",FloatBorder:" .. config.ui.border_hl
         )
     vim.api.nvim_win_set_option(win, "winblend", config.ui.blend)
 end
