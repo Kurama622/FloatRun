@@ -39,6 +39,12 @@ local function float_win_run(cmd)
     win = vim.api.nvim_open_win(buf, true, opts)
     vim.fn.termopen(cmd)
     vim.api.nvim_command("startinsert")
+    vim.api.nvim_win_set_option(
+        win,
+        "winhl",
+        "Normal:" .. config.ui.float_hl .. ",FloatBorder" .. config.ui.border_hl
+        )
+    vim.api.nvim_win_set_option(win, "winblend", config.ui.blend)
 end
 
 function M.float_run()
