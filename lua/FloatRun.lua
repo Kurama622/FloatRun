@@ -36,6 +36,7 @@ local function float_win_run(cmd)
         row = row,
         col = col
     }
+    vim.api.nvim_command("write")
     win = vim.api.nvim_open_win(buf, true, opts)
     vim.fn.termopen(cmd)
     vim.api.nvim_command("startinsert")
