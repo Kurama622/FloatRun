@@ -1,5 +1,5 @@
 ## FloatRun
-`FloatRun` is a Neovim plugin that lets you run you code in float window.
+`FloatRun` is a minimize Neovim plugin that lets you run you code in float window.
 
 ![FloatRun](https://gitee.com/svegeta/screenshot/raw/master/FloatRun.png)
 
