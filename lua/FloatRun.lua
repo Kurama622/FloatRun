@@ -36,7 +36,7 @@ local function float_win_run(cmd)
     row = row,
     col = col
   }
-  if (cmd ~= "term") then
+  if (cmd ~= "$SHELL") then
     vim.api.nvim_command("write")
   end
   win = vim.api.nvim_open_win(buf, true, opts)
