@@ -48,12 +48,14 @@ local function float_win_run(cmd)
     vim.api.nvim_win_set_option(win, "winblend", config.ui.blend)
 end
 
-function M.float_run()
-    if (config.run_command[vim.bo.filetype]) then
-        float_win_run(config.run_command[vim.bo.filetype])
-   else
-       print("\nFileType not supported\n")
-   end
+function M.float_run(cmd)
+  if (cmd == "default" and config.run_command[vim.bo.filetype]) then
+    float_win_run(config.run_command[vim.bo.filetype])
+  elseif (cmd == "term") then
+    float_win_run("$SHELL")
+  else
+    print("\nFileType not supported\n")
+  end
 end
 
 

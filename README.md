@@ -11,7 +11,7 @@ use {
         config = function()
             require 'module.floatrun'
         end,
-        cmd = {'FloatRun'}
+        cmd = {'FloatRun', 'FloatTerm'}
     }
 ```
 
@@ -45,6 +45,7 @@ require("FloatRun").setup{
 
 ```
 :FloatRun
+:FloatTerm
 ```
 
 ### Refer
