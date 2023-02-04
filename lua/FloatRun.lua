@@ -1,6 +1,8 @@
 local M = {}
 
 local file = vim.api.nvim_buf_get_name(0)
+local win_opened = false
+local win
 
 local config = {
   ui = {
@@ -48,18 +50,40 @@ local function float_win_run(cmd)
     "Normal:" .. config.ui.float_hl .. ",FloatBorder:" .. config.ui.border_hl
     )
   vim.api.nvim_win_set_option(win, "winblend", config.ui.blend)
+  return win
 end
 
 function M.float_run(cmd)
   if (cmd == "default" and config.run_command[vim.bo.filetype]) then
     float_win_run(config.run_command[vim.bo.filetype])
+    win_opened = true
   elseif (cmd == "term") then
     float_win_run("$SHELL")
+    win_opened = true
   else
     print("\nFileType not supported\n")
   end
 end
 
+function M.float_run_toggle(cmd)
+  if (cmd == "default" and config.run_command[vim.bo.filetype]) then
+    if (win_opened) then
+      vim.api.nvim_win_hide(win)
+    else
+      win = float_win_run(config.run_command[vim.bo.filetype])
+      win_opened = true
+    end
+  elseif (cmd == "term") then
+    if (win_opened) then
+      vim.api.nvim_win_hide(win)
+    else
+      float_win_run("$SHELL")
+      win_opened = true
+    end
+  else
+    print("\nFileType not supported\n")
+  end
+end
 
 function M.setup(custom_config) 
   config = vim.tbl_deep_extend("force", config, custom_config)
