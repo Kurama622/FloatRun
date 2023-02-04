@@ -11,7 +11,7 @@ use {
         config = function()
             require 'module.floatrun'
         end,
-        cmd = {'FloatRun', 'FloatTerm'}
+        cmd = {'FloatRunToggle', 'FloatTermToggle'}
     }
 ```
 
@@ -44,8 +44,8 @@ require("FloatRun").setup{
 ### Usage:
 
 ```
-:FloatRun
-:FloatTerm
+:FloatRunToggle
+:FloatTermToggle
 ```
 
 ### Refer
