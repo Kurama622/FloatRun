@@ -2,10 +2,10 @@
 `FloatRun` is a minimize Neovim plugin that lets you run your code in float window.
 
 ### FloatRunToggle
-![FloatRunToggle](https://gitee.com/svegeta/screenshot/raw/master/FloatRunToggle.gif)
+![FloatRunToggle](https://github.com/StubbornVegeta/screenshot/blob/master/FloatRunToggle.gif)
 
 ### FloatTermToggle
-![FloatTermToggle](https://gitee.com/svegeta/screenshot/raw/master/FloatTermToggle.gif)
+![FloatTermToggle](https://github.com/StubbornVegeta/screenshot/blob/master/FloatTermToggle.gif)
 
 ### Installation
 For `Packer.nvim`:
