@@ -7,7 +7,7 @@
 ### FloatTermToggle
 ![FloatTermToggle](https://github.com/StubbornVegeta/screenshot/blob/master/FloatTermToggle.gif)
 
-### Installation
+### Installation && Configuration
 ####  Packer.nvim:
 ```lua
 use {
@@ -18,8 +18,6 @@ use {
         cmd = {'FloatRunToggle', 'FloatTermToggle'}
     }
 ```
-
-### Configuration
 
 Write the following configuration into `/lua/module/floatrun.lua`:
 ```lua
@@ -43,6 +41,7 @@ require("FloatRun").setup{
         [''] = "",
     }
 }
+```
 
 #### lazy.nvim
 
@@ -74,7 +73,6 @@ require("FloatRun").setup{
   end,
   keys = { { "<F5>", "<cmd>FloatRunToggle<cr>" } },
 },
-```
 ```
 
 ### Usage:
