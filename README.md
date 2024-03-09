@@ -19,7 +19,7 @@ use {
     }
 ```
 
-Write the following configuration into `/lua/module/floatrun.lua`:
+Write the following configuration into `~/.config/nvim/lua/module/floatrun.lua`:
 ```lua
 local file = vim.api.nvim_buf_get_name(0)
 require("FloatRun").setup{
