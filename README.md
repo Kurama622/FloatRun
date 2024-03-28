@@ -33,7 +33,7 @@ require("FloatRun").setup{
         y = 0.5
     },
     run_command = {
-        ['cpp'] = 'g++ -std=c++11 %s -Wall -o {} && ./{}',
+        ['cpp'] = 'g++ -std=c++11 %s -Wall -o {} && {}',
         ['python'] = "python %s",
         ['lua'] = "luafile %s",
         ['sh'] = "sh %s",
@@ -61,7 +61,7 @@ require("FloatRun").setup{
         y = 0.5,
       },
       run_command = {
-        cpp = "g++ -std=c++11 %s -Wall -o {} && ./{}",
+        cpp = "g++ -std=c++11 %s -Wall -o {} && {}",
         python = "python %s",
         lua = "luafile %s",
         sh = "sh %s",
