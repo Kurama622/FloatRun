@@ -21,7 +21,6 @@ use {
 
 Write the following configuration into `~/.config/nvim/lua/module/floatrun.lua`:
 ```lua
-local file = vim.api.nvim_buf_get_name(0)
 require("FloatRun").setup{
     ui = {
         border = "single",
@@ -34,10 +33,10 @@ require("FloatRun").setup{
         y = 0.5
     },
     run_command = {
-        ['cpp'] = 'g++ '..file .. ' -Wall -o ' .. vim.fn.expand('%<') .. ' && ./' .. vim.fn.expand('%<'),
-        ['python'] = "python " .. file,
-        ['lua'] = "luafile " .. file,
-        ['sh'] = "sh " .. file,
+        ['cpp'] = 'g++ -std=c++11 %s -Wall -o {} && ./{}',
+        ['python'] = "python %s",
+        ['lua'] = "luafile %s",
+        ['sh'] = "sh %s",
         [''] = "",
     }
 }
@@ -50,7 +49,6 @@ require("FloatRun").setup{
   "StubbornVegeta/FloatRun",
   cmd = "FloatRunToggle",
   opts = function()
-    local file = vim.api.nvim_buf_get_name(0)
     return {
       ui = {
         border = "single",
@@ -63,10 +61,10 @@ require("FloatRun").setup{
         y = 0.5,
       },
       run_command = {
-        cpp = "g++ -std=c++11 " .. file .. " -Wall -o " .. vim.fn.expand("%<") .. " && ./" .. vim.fn.expand("%<"),
-        python = "python " .. file,
-        lua = "luafile " .. file,
-        sh = "sh " .. file,
+        cpp = "g++ -std=c++11 %s -Wall -o {} && ./{}",
+        python = "python %s",
+        lua = "luafile %s",
+        sh = "sh %s",
         [""] = "",
       },
     }
