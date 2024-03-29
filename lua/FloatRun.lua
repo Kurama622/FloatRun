@@ -101,6 +101,7 @@ function M.float_run_toggle(cmd, ...)
 		end
 		if win_opened[2] then
 			vim.api.nvim_win_close(0, false)
+			vim.api.nvim_command("startinsert")
 			win_opened[2] = false
 		elseif win_created[2] then
 			vim.api.nvim_open_win(float_win_buf[2], true, opts)
