@@ -35,7 +35,7 @@ require("FloatRun").setup{
     run_command = {
         ['cpp'] = 'g++ -std=c++11 %s -Wall -o {} && {}',
         ['python'] = "python %s",
-        ['lua'] = "luafile %s",
+        ['lua'] = "lua %s",
         ['sh'] = "sh %s",
         [''] = "",
     }
@@ -47,7 +47,7 @@ require("FloatRun").setup{
 ```lua
 {
   "StubbornVegeta/FloatRun",
-  cmd = "FloatRunToggle",
+  cmd = { "FloatRunToggle", "FloatTermToggle" },
   opts = function()
     return {
       ui = {
@@ -55,22 +55,25 @@ require("FloatRun").setup{
         float_hl = "Normal",
         border_hl = "FloatBorder",
         blend = 0,
-        height = 0.8,
-        width = 0.8,
+        height = 0.5,
+        width = 0.9,
         x = 0.5,
         y = 0.5,
       },
       run_command = {
         cpp = "g++ -std=c++11 %s -Wall -o {} && {}",
         python = "python %s",
-        lua = "luafile %s",
+        lua = "lua %s",
         sh = "sh %s",
         [""] = "",
       },
     }
   end,
-  keys = { { "<F5>", "<cmd>FloatRunToggle<cr>" } },
-},
+  keys = {
+    { "<F5>", "<cmd>FloatRunToggle<cr>" },
+    { "<F2>", mode = { "n", "t" }, "<cmd>FloatTermToggle<cr>" },
+  },
+}
 ```
 
 ### Usage:
