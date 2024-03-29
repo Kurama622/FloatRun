@@ -1,8 +1,8 @@
 local M = {}
 
-local win_opened = false
-local win_created = false
-local float_win_buf = -1
+local win_opened = { false, false }
+local win_created = { false, false }
+local float_win_buf = { -1, -1 }
 local opts
 
 local config = {
@@ -17,7 +17,7 @@ local config = {
 		y = 0.5,
 	},
 	run_command = {
-		["cpp"] = "g++ %s -Wall -o {} && ./{}",
+		["cpp"] = "g++ %s -Wall -o {} && {}",
 		["python"] = "python %s",
 		["lua"] = "luafile %s",
 		["sh"] = "sh %s",
@@ -26,7 +26,6 @@ local config = {
 }
 
 local function float_win_run(cmd)
-	float_win_buf = vim.api.nvim_create_buf(false, true)
 	local win_height = math.ceil(vim.api.nvim_get_option("lines") * config.ui.height - 4)
 	local win_width = math.ceil(vim.api.nvim_get_option("columns") * config.ui.width)
 	local col = math.ceil((vim.api.nvim_get_option("columns") - win_width) * config.ui.x)
@@ -40,10 +39,15 @@ local function float_win_run(cmd)
 		row = row,
 		col = col,
 	}
+	local win
 	if cmd ~= "$SHELL" then
+		float_win_buf[1] = vim.api.nvim_create_buf(false, true)
 		vim.api.nvim_command("write")
+		win = vim.api.nvim_open_win(float_win_buf[1], true, opts)
+	else
+		float_win_buf[2] = vim.api.nvim_create_buf(false, true)
+		win = vim.api.nvim_open_win(float_win_buf[2], true, opts)
 	end
-	win = vim.api.nvim_open_win(float_win_buf, true, opts)
 	vim.fn.termopen(cmd)
 	vim.api.nvim_command("startinsert")
 	vim.api.nvim_win_set_option(win, "winhl", "Normal:" .. config.ui.float_hl .. ",FloatBorder:" .. config.ui.border_hl)
@@ -59,10 +63,10 @@ function M.float_run(cmd, ...)
 		local str = string.format(config.run_command[vim.bo.filetype], file)
 		local run_command_str = string.gsub(str, "{}", bin)
 		float_win_run(run_command_str)
-		win_opened = true
+		win_opened[1] = true
 	elseif cmd == "term" then
 		float_win_run("$SHELL")
-		win_opened = true
+		win_opened[2] = true
 	else
 		print("\nFileType not supported\n")
 	end
@@ -73,38 +77,38 @@ function M.float_run_toggle(cmd, ...)
 	local file = args[1]
 	local bin = args[2]
 	if cmd == "default" and config.run_command[vim.bo.filetype] then
-		if not vim.api.nvim_buf_is_valid(float_win_buf) then
-			win_opened = false
-			win_created = false
+		if not vim.api.nvim_buf_is_valid(float_win_buf[1]) then
+			win_opened[1] = false
+			win_created[1] = false
 		end
-		if win_opened then
+		if win_opened[1] then
 			vim.api.nvim_win_close(0, false)
-			win_opened = false
-		elseif win_created then
-			vim.api.nvim_open_win(float_win_buf, true, opts)
-			win_opened = true
+			win_opened[1] = false
+		elseif win_created[1] then
+			vim.api.nvim_open_win(float_win_buf[1], true, opts)
+			win_opened[1] = true
 		else
 			local str = string.format(config.run_command[vim.bo.filetype], file)
 			local run_command_str = string.gsub(str, "{}", bin)
 			float_win_run(run_command_str)
-			win_opened = true
-			win_created = true
+			win_opened[1] = true
+			win_created[1] = true
 		end
 	elseif cmd == "term" then
-		if not vim.api.nvim_buf_is_valid(float_win_buf) then
-			win_opened = false
-			win_created = false
+		if not vim.api.nvim_buf_is_valid(float_win_buf[2]) then
+			win_opened[2] = false
+			win_created[2] = false
 		end
-		if win_opened then
+		if win_opened[2] then
 			vim.api.nvim_win_close(0, false)
-			win_opened = false
-		elseif win_created then
-			vim.api.nvim_open_win(float_win_buf, true, opts)
-			win_opened = true
+			win_opened[2] = false
+		elseif win_created[2] then
+			vim.api.nvim_open_win(float_win_buf[2], true, opts)
+			win_opened[2] = true
 		else
 			float_win_run("$SHELL")
-			win_opened = true
-			win_created = true
+			win_opened[2] = true
+			win_created[2] = true
 		end
 	else
 		print("\nFileType not supported\n")
