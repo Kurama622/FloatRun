@@ -2,16 +2,16 @@
 `FloatRun` is a minimize Neovim plugin that lets you run your code in float window.
 
 ### FloatRunToggle
-![FloatRunToggle](https://github.com/StubbornVegeta/screenshot/blob/master/FloatRunToggle.gif)
+![FloatRunToggle](https://github.com/Kurama622/screenshot/blob/master/FloatRunToggle.gif)
 
 ### FloatTermToggle
-![FloatTermToggle](https://github.com/StubbornVegeta/screenshot/blob/master/FloatTermToggle.gif)
+![FloatTermToggle](https://github.com/Kurama622/screenshot/blob/master/FloatTermToggle.gif)
 
 ### Installation && Configuration
 ####  Packer.nvim:
 ```lua
 use {
-        'StubbornVegeta/FloatRun',
+        'Kurama622/FloatRun',
         config = function()
             require 'module.floatrun'
         end,
@@ -46,7 +46,7 @@ require("FloatRun").setup{
 
 ```lua
 {
-  "StubbornVegeta/FloatRun",
+  "Kurama622/FloatRun",
   cmd = { "FloatRunToggle", "FloatTermToggle" },
   opts = function()
     return {
