@@ -70,8 +70,9 @@ require("FloatRun").setup{
     }
   end,
   keys = {
-    { "<F5>", "<cmd>FloatRunToggle<cr>" },
+    { "<F5>", mode = { "n", "t" }, "<cmd>FloatRunToggle<cr>" },
     { "<F2>", mode = { "n", "t" }, "<cmd>FloatTermToggle<cr>" },
+    { "<F14>", mode = { "n", "t" }, "<cmd>FloatTerm<cr>" }, -- always create a new terminal
   },
 }
 ```
