@@ -14,7 +14,7 @@ local opts = {
 local state = {
   workspace = {
     cmd = {},
-    term = { { opened = false, created = false, bufid = -1 } },
+    term = {},
   },
   index = {
     cmd = 0,
@@ -191,6 +191,7 @@ function M.float_run_toggle(cmd, ...)
       if not workspace_term or not vim.api.nvim_buf_is_valid(workspace_term.bufid) then
         if not workspace_term then
           -- vim.notify("Create TERM", vim.log.levels.INFO, { title = "FloatRun" })
+          table.insert(state.workspace.term, { opened = false, created = false, bufid = -1 })
           idx.term = idx.term + 1
           cnt.term = cnt.term + 1
           workspace_term = state.workspace.term[idx.term]
@@ -225,6 +226,32 @@ function M.float_run_toggle(cmd, ...)
   end
 end
 
+function M.float_term_prev()
+  vim.api.nvim_win_close(0, false)
+  state.index.term = state.index.term - 1
+  if state.index.term < 1 then
+    state.index.term = state.cnt.term
+  end
+  local workspace_term = state.workspace.term[state.index.term]
+  opts.title = string.format("[ %s/%s ]", state.index.term, state.cnt.term)
+  vim.api.nvim_open_win(workspace_term.bufid, true, opts)
+  vim.api.nvim_command("startinsert")
+  workspace_term.opened = true
+end
+
+function M.float_term_next()
+  vim.api.nvim_win_close(0, false)
+  state.index.term = state.index.term + 1
+  if state.index.term > state.cnt.term then
+    state.index.term = 1
+  end
+  local workspace_term = state.workspace.term[state.index.term]
+  opts.title = string.format("[ %s/%s ]", state.index.term, state.cnt.term)
+  vim.api.nvim_open_win(workspace_term.bufid, true, opts)
+  vim.api.nvim_command("startinsert")
+  workspace_term.opened = true
+end
+
 function M.setup(conf)
   config = vim.tbl_deep_extend("force", config, conf)
   opts.title_pos = config.ui.title_pos
@@ -249,6 +276,9 @@ function M.setup(conf)
         table.remove(state.workspace.term, state.index.term)
         state.cnt.term = state.cnt.term - 1
         state.index.term = state.index.term - 1
+        if state.index.term < 1 then
+          state.index.term = state.cnt.term
+        end
       end
     end,
   })

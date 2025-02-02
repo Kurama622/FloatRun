@@ -73,6 +73,8 @@ require("FloatRun").setup{
     { "<F5>", mode = { "n", "t" }, "<cmd>FloatRunToggle<cr>" },
     { "<F2>", mode = { "n", "t" }, "<cmd>FloatTermToggle<cr>" },
     { "<F14>", mode = { "n", "t" }, "<cmd>FloatTerm<cr>" }, -- always create a new terminal
+    { "<C-j>", mode = "t", "<cmd>FloatTermNext<cr>" }, -- switch next terminal
+    { "<C-k>", mode = "t", "<cmd>FloatTermPrev<cr>" }, -- switch prev terminal
   },
 }
 ```
