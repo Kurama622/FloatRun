@@ -1,5 +1,10 @@
 local M = {}
 
+local nvim_version = {
+  major = 0,
+  minor = 11,
+}
+
 local opts = {
   style = "minimal",
   relative = "editor",
@@ -48,6 +53,44 @@ local config = {
   },
 }
 
+local function _termopen(cmd, bufnr)
+  local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+  if nvim_version.major > 0 or nvim_version.major == 0 and nvim_version.minor > 10 then
+    if filetype == "FloatRun" then
+      return vim.fn.jobstart(cmd, {
+        term = true,
+      })
+    else
+      return vim.fn.jobstart(cmd, {
+        term = true,
+        on_exit = function()
+          table.remove(state.workspace.term, state.index.term)
+          state.cnt.term = state.cnt.term - 1
+          state.index.term = state.index.term - 1
+          if state.index.term < 1 then
+            state.index.term = state.cnt.term
+          end
+        end,
+      })
+    end
+  else
+    if filetype == "FloatRun" then
+      return vim.fn.termopen(cmd)
+    else
+      return vim.fn.termopen(cmd, {
+        on_exit = function()
+          table.remove(state.workspace.term, state.index.term)
+          state.cnt.term = state.cnt.term - 1
+          state.index.term = state.index.term - 1
+          if state.index.term < 1 then
+            state.index.term = state.cnt.term
+          end
+        end,
+      })
+    end
+  end
+end
+
 local function _run(cmd)
   local win_height = math.ceil(vim.api.nvim_get_option_value("lines", { scope = "local" }) * config.ui.height - 4)
   local win_width = math.ceil(vim.api.nvim_get_option_value("columns", { scope = "local" }) * config.ui.width)
@@ -67,14 +110,14 @@ local function _run(cmd)
     vim.api.nvim_command("write")
     win = vim.api.nvim_open_win(state.workspace.cmd[idx.cmd].bufid, true, opts)
     vim.api.nvim_set_option_value("filetype", "FloatRun", { buf = state.workspace.cmd[idx.cmd].bufid })
-    vim.fn.jobstart(cmd, { term = true })
+    _termopen(cmd, state.workspace.cmd[idx.cmd].bufid)
     vim.api.nvim_command("startinsert")
     vim.api.nvim_buf_set_name(state.workspace.cmd[idx.cmd].bufid, "[output] " .. filename)
   else
     local filename = "Terminal " .. tostring(idx.term)
     state.workspace.term[idx.term].bufid = vim.api.nvim_create_buf(false, true)
     win = vim.api.nvim_open_win(state.workspace.term[idx.term].bufid, true, opts)
-    vim.fn.jobstart(cmd, { term = true })
+    _termopen(cmd, state.workspace.term[idx.term].bufid)
     vim.api.nvim_command("startinsert")
     vim.api.nvim_set_option_value("filetype", "FloatTerm", { buf = state.workspace.term[idx.term].bufid })
     vim.api.nvim_buf_set_name(state.workspace.term[idx.term].bufid, filename)
@@ -255,6 +298,10 @@ end
 function M.setup(conf)
   config = vim.tbl_deep_extend("force", config, conf)
   opts.title_pos = config.ui.title_pos
+
+  nvim_version.major = vim.version().major
+  nvim_version.minor = vim.version().minor
+
   vim.api.nvim_create_autocmd("QuitPre", {
     callback = function(args)
       local bufnr = args.buf
@@ -264,21 +311,6 @@ function M.setup(conf)
         table.remove(state.workspace.cmd, state.index.cmd)
         state.index.cmd = state.index.cmd - 1
         vim.api.nvim_buf_delete(bufnr, { force = true })
-      end
-    end,
-  })
-  vim.api.nvim_create_autocmd("TermClose", {
-    callback = function(args)
-      local bufnr = args.buf
-      local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
-      if filetype == "FloatTerm" then
-        table.remove(state.workspace.term, state.index.term)
-        state.cnt.term = state.cnt.term - 1
-        state.index.term = state.index.term - 1
-        if state.index.term < 1 then
-          state.index.term = state.cnt.term
-        end
       end
     end,
   })
