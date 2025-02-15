@@ -34,6 +34,7 @@ local state = {
 
 local config = {
   ui = {
+    relative = "editor",
     border = "single",
     float_hl = "Normal",
     border_hl = "FloatBorder",
@@ -92,10 +93,17 @@ local function _termopen(cmd, bufnr)
 end
 
 local function _run(cmd)
-  local win_height = math.ceil(vim.api.nvim_get_option_value("lines", { scope = "local" }) * config.ui.height - 4)
-  local win_width = math.ceil(vim.api.nvim_get_option_value("columns", { scope = "local" }) * config.ui.width)
-  local col = math.ceil((vim.api.nvim_get_option_value("columns", { scope = "local" }) - win_width) * config.ui.x)
-  local row = math.ceil((vim.api.nvim_get_option_value("lines", { scope = "local" }) - win_height) * config.ui.y - 1)
+  local subwin_height = vim.o.lines
+  local subwin_width = vim.o.columns
+  if config.ui.relative == "win" then
+    subwin_height = vim.api.nvim_win_get_height(0)
+    subwin_width = vim.api.nvim_win_get_width(0)
+  end
+  local win_height = math.ceil(subwin_height * config.ui.height - 4)
+  local win_width = math.ceil(subwin_width * config.ui.width)
+  local col = math.ceil((subwin_width - win_width) * config.ui.x)
+  local row = math.ceil((subwin_height - win_height) * config.ui.y - 1)
+  opts.relative = config.ui.relative
   opts.border = config.ui.border
   opts.width = win_width
   opts.height = win_height
