@@ -23,6 +23,7 @@ Write the following configuration into `~/.config/nvim/lua/module/floatrun.lua`:
 ```lua
 require("FloatRun").setup{
     ui = {
+        relative = "win",  -- win / editor
         border = "single",
         float_hl = "Normal",
         border_hl = "FloatBorder",
@@ -36,6 +37,7 @@ require("FloatRun").setup{
         ['cpp'] = 'g++ -std=c++11 %s -Wall -o {} && {}',
         ['python'] = "python %s",
         ['lua'] = "lua %s",
+        -- ['lua'] = "<builtin>luafile %s",  -- for nvim's built-in cmd
         ['sh'] = "sh %s",
         [''] = "",
     }
@@ -51,6 +53,7 @@ require("FloatRun").setup{
   opts = function()
     return {
       ui = {
+        relative = "win", -- win / editor
         border = "single",
         float_hl = "Normal",
         border_hl = "FloatBorder",
@@ -64,6 +67,7 @@ require("FloatRun").setup{
         cpp = "g++ -std=c++11 %s -Wall -o {} && {}",
         python = "python %s",
         lua = "lua %s",
+        -- lua = "<builtin>luafile %s",  -- for nvim's built-in cmd
         sh = "sh %s",
         [""] = "",
       },

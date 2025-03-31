@@ -54,8 +54,25 @@ local config = {
   },
 }
 
+local function startswith_builtin(str)
+  return string.match(str, "^<builtin>")
+end
+
+local function remove_startswith_prefix(str)
+  return string.gsub(str, "^<builtin>", "")
+end
+
 local function _termopen(cmd, bufnr)
   local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
+  if startswith_builtin(cmd) then
+    cmd = remove_startswith_prefix(cmd)
+    cmd = string.format(
+      [[cat <<EOF
+%s
+EOF]],
+      vim.api.nvim_cmd(vim.api.nvim_parse_cmd(cmd, {}), { output = true })
+    )
+  end
   if nvim_version.major > 0 or nvim_version.major == 0 and nvim_version.minor > 10 then
     if filetype == "FloatRun" then
       return vim.fn.jobstart(cmd, {
