@@ -70,7 +70,9 @@ local function _termopen(cmd, bufnr)
       [[cat <<EOF
 %s
 EOF]],
-      vim.api.nvim_cmd(vim.api.nvim_parse_cmd(cmd, {}), { output = true })
+      (vim.api.nvim_cmd(vim.api.nvim_parse_cmd(cmd, {}), { output = true }):gsub(".", {
+        ["`"] = "\\`",
+      }))
     )
   end
   if nvim_version.major > 0 or nvim_version.major == 0 and nvim_version.minor > 10 then

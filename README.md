@@ -23,7 +23,7 @@ Write the following configuration into `~/.config/nvim/lua/module/floatrun.lua`:
 ```lua
 require("FloatRun").setup{
     ui = {
-        relative = "win",  -- win / editor
+        relative = "editor",  -- win / editor
         border = "single",
         float_hl = "Normal",
         border_hl = "FloatBorder",
@@ -53,7 +53,7 @@ require("FloatRun").setup{
   opts = function()
     return {
       ui = {
-        relative = "win", -- win / editor
+        relative = "editor", -- win / editor
         border = "single",
         float_hl = "Normal",
         border_hl = "FloatBorder",
