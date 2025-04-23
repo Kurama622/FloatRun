@@ -1,10 +1,5 @@
 local M = {}
 
-local nvim_version = {
-  major = 0,
-  minor = 11,
-}
-
 local opts = {
   style = "minimal",
   relative = "editor",
@@ -75,7 +70,8 @@ EOF]],
       }))
     )
   end
-  if nvim_version.major > 0 or nvim_version.major == 0 and nvim_version.minor > 10 then
+
+  if vim.version.gt(vim.version(), { 0, 10, 0 }) then
     if filetype == "FloatRun" then
       return vim.fn.jobstart(cmd, {
         term = true,
@@ -325,9 +321,6 @@ end
 function M.setup(conf)
   config = vim.tbl_deep_extend("force", config, conf)
   opts.title_pos = config.ui.title_pos
-
-  nvim_version.major = vim.version().major
-  nvim_version.minor = vim.version().minor
 
   vim.api.nvim_create_autocmd("QuitPre", {
     callback = function(args)
